@@ -13,7 +13,7 @@ window.onload = async function main() {
     }
 }
 
-function add_rendered_image(evnt: Event) {
+function add_rendered_image(_evnt: Event) {
     let reader = new FileReader();
     
     for (let infile of input.files) {
@@ -21,12 +21,10 @@ function add_rendered_image(evnt: Event) {
         reader.readAsDataURL(infile);
         reader.onload = async function() {
             let result = <URL> <unknown> reader.result;
-            let rendered_uri = await render_block(result);
-            
-            console.log("Rendered URL:", rendered_uri);
+            let rendered_uri = await render_block({ top: result });
             
             let link = document.createElement("a");
-            link.href = rendered_uri;
+            link.href = rendered_uri.toString();
             link.download = infile.name;
             link.text = infile.name;
             

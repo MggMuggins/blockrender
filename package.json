@@ -4,8 +4,10 @@
     "three": "^0.115.0"
   },
   "devDependencies": {
+    "cssnano": "^4.1.10",
     "typescript": "^3.8.3"
   },
+  "_comment": "Fix so that I can use async/await",
   "browserslist": [
     "since 2017-06"
   ]
