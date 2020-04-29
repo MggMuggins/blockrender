@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "js": "^0.1.0",
+    "knockout": "^3.5.1",
     "three": "^0.115.0"
   },
   "devDependencies": {

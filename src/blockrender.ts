@@ -7,10 +7,11 @@ import {
     Mesh,
     MeshStandardMaterial,
     NearestFilter,
-    OrthographicCamera,
     Scene,
     WebGLRenderer,
 } from "three";
+
+import { block_camera, set_rotation } from "./utils";
 
 class BlockFaces {
     top: URL;
@@ -64,28 +65,16 @@ export async function render_block(faces: BlockFaces): Promise<URL> {
     scene.add(direct_light_dark);
     
     var textures = await load_texture(faces);
-    console.log(textures);
-    
-    var material = new MeshStandardMaterial({ /*color: 0x006000,*/ map: textures });
-    console.log(material);
+    var material = new MeshStandardMaterial({ map: textures });
     
     var geometry = new BoxGeometry(1, 1, 1);
     
     var cube = new Mesh(geometry, material);
-    cube.rotation.x = Math.PI / 6;
-    cube.rotation.y = Math.PI / 4;
+    set_rotation(cube);
     scene.add(cube);
     
-    return run_once_render(scene, make_camera());
+    return run_once_render(scene, block_camera());
 };
-
-function make_camera(): Camera {
-    var dist = 0.80;
-    var cam = new OrthographicCamera( -dist, dist, dist, -dist, 1, 1000);
-    cam.position.z = 3;
-    
-    return cam;
-}
 
 function run_once_render(scene: Scene, camera: Camera): URL {
     var renderer = new WebGLRenderer({
