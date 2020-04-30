@@ -1,0 +1,15 @@
+<render-details>
+    <h3>Render Type</h3>
+    <select id="render-mode">
+        <option value="block">Block</option>
+    </select>
+    <render-details-block id="block-options"></render-details-block>
+    
+    <script>
+        import * as riot from "riot";
+        import RenderDetailsBlock from "./render-details-block.riot";
+        
+        riot.register("render-details-block", RenderDetailsBlock);
+        riot.mount("render-details-block");
+    </script>
+</render-details>

@@ -1,0 +1,50 @@
+<files-list>
+    <h3>Files: { props.message }</h3>
+    <div id="file-list" each={ file in state.files }>
+        <file-item
+            file={ file }
+            remove={ (_evnt) => remove_file(props.file.name) }
+            ondragstart={ (evnt) => drag_start(evnt, file) }
+            ondragend={ (evnt) => drag_end(evnt, file) }></file-item>
+    </div>
+    <label for="file-chooser" class="fab"> + </label>
+    <input id="file-chooser" type="file" multiple onchange={ add_file }/>
+    
+    <script>
+        import * as riot from "riot";
+        import file_stringify from "../main.ts";
+        
+        import FileItem from "./file-item.riot";
+        riot.register("file-item", FileItem);
+        riot.mount("file-item");
+        
+        export default {
+            onMounted() {
+                this.state.files = Array();
+            },
+            
+            add_file(evnt) {
+                for (let file of evnt.target.files)
+                    this.state.files.push(file);
+                this.update();
+            },
+            
+            remove_file(filename) {
+                let indx = this.state.files.findIndex((cur_file) => cur_file.name === filename );
+                this.state.files.splice(indx, 1);
+                this.update();
+            },
+            
+            drag_start(evnt, file) {
+                console.log(file);
+                console.log(evnt.dataTransfer.files);
+                evnt.dataTransfer.files.push(file);
+            },
+            
+            drag_end(evnt, file) {
+                if (evnt.dataTransfer.dropEffect !== "none")
+                    this.remove_file(file.name);
+            }
+        }
+    </script>
+</files-list>

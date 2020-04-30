@@ -1,0 +1,18 @@
+<app>
+    <!--<files-list class="column left"></files-list>-->
+    <render-details class="column left"></render-details>
+    <draw-canvas class="column"></draw-canvas>
+    
+    <script>
+        import * as riot from "riot";
+        import FilesList from "./files-list.riot";
+        import RenderDetails from "./render-details.riot";
+        import DrawCanvas from "./draw-canvas.riot";
+        
+        riot.register('files-list', FilesList);
+        riot.register('render-details', RenderDetails);
+        riot.register('draw-canvas', DrawCanvas);
+        
+        riot.mount("files-list, render-details, draw-canvas");
+    </script>
+</app>

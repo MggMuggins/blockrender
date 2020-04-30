@@ -1,0 +1,76 @@
+<render-details-block>
+    <div class="file-drop"
+        id="block-top"
+        ondragenter={ drag_enter }
+        ondragover= { drag_over }
+        ondragexit={ drag_exit }
+        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "top"); }}
+    >
+        Top
+    </div>
+    <div class="file-drop"
+        id="block-side"
+        ondragenter={ drag_enter }
+        ondragover={ drag_over }
+        ondragexit={ drag_exit }
+        ondrop={ (evnt) => drop(evnt, "side") }
+    >
+        Side<br/><span class="default-texture">Default: Top</span>
+    </div>
+    <div class="file-drop"
+        id="block-front"
+        ondragenter={ drag_enter }
+        ondragover={ drag_over }
+        ondragexit={ drag_exit }
+        ondrop={ (evnt) => drop(evnt, "front") }
+    >
+        Front<br/><span class="default-texture">Default: Side</span>
+    </div>
+    
+    <script>
+        import { render_block } from "../blockrender"
+        
+        export default {
+            onMounted() {
+                this.state.block_faces = {};
+            },
+            
+            drag_enter(evnt) {
+                evnt.target.style.transform = "scale(1.02)";
+            },
+            
+            drag_over(evnt) {
+                evnt.preventDefault();
+            },
+            
+            drag_exit(evnt) {
+                evnt.target.style.transform = "";
+            },
+            
+            async drop(evnt, pos) {
+                evnt.preventDefault();
+                evnt.target.style.transform = "";
+                
+                let state = this.state;
+                let reader = new FileReader();
+                // Only one file per box pls
+                reader.readAsDataURL(evnt.dataTransfer.files[0]);
+                reader.onload = async function() {
+                    switch (pos) {
+                        case "top":
+                            state.block_faces.top = reader.result;
+                            break;
+                        case "side":
+                            state.block_faces.side = reader.result;
+                            break;
+                        case "front":
+                            state.block_faces.front = reader.result;
+                            break;
+                    }
+                    //TODO: Make this URL available to something
+                    await render_block(state.block_faces);
+                };
+            }
+        }
+    </script>
+</render-details-block>

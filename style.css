@@ -1,11 +1,12 @@
 html { height: 100%; }
 
-body {
+body #root {
     position: absolute;
     top: 0;
     bottom: 0;
     right: 0;
     left: 0;
+    margin: 5px;
 }
 
 h3 {
@@ -33,6 +34,7 @@ h3 {
     margin: 5px 5% 5px 5%;
     padding: 3px;
     border: 1px solid black;
+    display: inline-block;
     user-select: none;
 }
 
@@ -84,7 +86,7 @@ h3 {
     cursor: pointer;
 }
 
-#render-type {
+#render-mode {
     margin: 1%;
 }
 
@@ -96,6 +98,7 @@ h3 {
     color: grey;
     text-align: center;
     font-size: 30px;
+    user-select: none;
 }
 
 .default-texture {
@@ -103,7 +106,11 @@ h3 {
     line-height: 18px;
 }
 
-canvas { display: block; }
+canvas {
+    height: 512px;
+    width: 512px;
+    display: block;
+}
 
 #download-button {
     margin: 1%;

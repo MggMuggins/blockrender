@@ -41,10 +41,12 @@ function load_texture(faces: BlockFaces): Promise<Texture[]> {
         if (faces.side != undefined) {
             let side = loader.load(faces.side, resolve);
             side.magFilter = NearestFilter;
-            list[1] = side;
+            list[2] = side;
             if (faces.front == undefined)
-                list[4] = list[1];
+                list[4] = side;
         }
+        
+        console.debug("Block Faces Textures: ", list);
         
         return list;
     });
@@ -85,5 +87,8 @@ function run_once_render(scene: Scene, camera: Camera): URL {
     
     renderer.render(scene, camera);
     
-    return renderer.domElement.toDataURL( 'image/png' );
+    let rendered_image_url =  renderer.domElement.toDataURL( 'image/png' );
+    
+    renderer = null;
+    return rendered_image_url;
 }

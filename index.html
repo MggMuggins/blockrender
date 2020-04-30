@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <title>Blockrender</title>
@@ -7,35 +7,6 @@
         <script src="src/main.ts"></script>
     </head>
     <body>
-        <div class="column left">
-            <!--<p data-bind="text: ko.toJSON(files)"></p>-->
-            <h3>Files:</h3>
-            <div id="file-list">
-                <!--ko foreach: files-->
-                <div class="file" draggable="true">
-                    <!--If the text attribute is used on this ^ div, the children get overridden, hence the span-->
-                    <span data-bind="text: name"></span>
-                    <div class="file-remove" data-bind="click: function(file, evnt){$root.remove_file($root, file, evnt)}"> - </div>
-                </div>
-                <!--/ko-->
-            </div>
-            <label for="file-chooser" class="fab"> + </label>
-            <input id="file-chooser" type="file" multiple data-bind="event: { change: $root.add_file }"/>
-        </div>
-        <div class="column left">
-            <h3>Render Type</h3>
-            <select id="render-type">
-                <option value="block">Block</option>
-            </select>
-            <div id="block-options">
-                <div class="file-drop" id="block-top">Top</div>
-                <div class="file-drop" id="block-side">Side<br/><span class="default-texture">Default: Top</span></div>
-                <div class="file-drop" id="block-front">Front<br/><span class="default-texture">Default: Side</span></div>
-            </div>
-        </div>
-        <div class="column">
-            <canvas id="render-canvas"></canvas>
-            <button id="download-button">Download</button>
-        </div>
+        <div id="root"></div>
     </body>
 </html>
