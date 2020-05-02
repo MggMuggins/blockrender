@@ -36,9 +36,11 @@
             },
             
             drag_start(evnt, file) {
-                console.log(file);
-                console.log(evnt.dataTransfer.files);
-                evnt.dataTransfer.files.push(file);
+                let reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function () {
+                    evnt.dataTransfer.setData("text/url-list", reader.result);
+                }
             },
             
             drag_end(evnt, file) {

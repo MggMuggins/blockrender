@@ -1,4 +1,22 @@
 <draw-canvas>
     <canvas id="render-canvas"></canvas>
-    <button id="download-button">Download</button>
+    <input type="text" id="outfilename" />
+    <button class="button"
+        onclick={ () => {
+            function downloadURI(uri, name) {
+                var link = document.createElement("a");
+                link.download = name;
+                link.href = uri;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+            
+            let url = document.getElementById("render-canvas").toDataURL("image/png");
+            let filename = document.getElementById("outfilename").value;
+            
+            downloadURI(url, filename);
+        }}>
+        Download
+    </button>
 </draw-canvas>

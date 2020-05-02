@@ -4,7 +4,7 @@
         ondragenter={ drag_enter }
         ondragover= { drag_over }
         ondragexit={ drag_exit }
-        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "top"); }}
+        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "top"); } }
     >
         Top
     </div>
@@ -13,7 +13,7 @@
         ondragenter={ drag_enter }
         ondragover={ drag_over }
         ondragexit={ drag_exit }
-        ondrop={ (evnt) => drop(evnt, "side") }
+        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "side"); } }
     >
         Side<br/><span class="default-texture">Default: Top</span>
     </div>
@@ -22,7 +22,7 @@
         ondragenter={ drag_enter }
         ondragover={ drag_over }
         ondragexit={ drag_exit }
-        ondrop={ (evnt) => drop(evnt, "front") }
+        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "front"); } }
     >
         Front<br/><span class="default-texture">Default: Side</span>
     </div>
@@ -47,28 +47,34 @@
                 evnt.target.style.transform = "";
             },
             
-            async drop(evnt, pos) {
-                evnt.preventDefault();
-                evnt.target.style.transform = "";
-                
+            drop(evnt, pos) {
                 let state = this.state;
+                this.drag_exit(evnt);
+                
                 let reader = new FileReader();
                 // Only one file per box pls
-                reader.readAsDataURL(evnt.dataTransfer.files[0]);
-                reader.onload = async function() {
+                if (evnt.dataTransfer.files.length > 0)
+                    reader.readAsDataURL(evnt.dataTransfer.files[0]);
+                
+                let dataURL = evnt.dataTransfer.getData("text/url-list");
+                
+                reader.onload = function() {
+                    let result = dataURL == "" ? reader.result : dataURL;
+                    
                     switch (pos) {
                         case "top":
-                            state.block_faces.top = reader.result;
+                            state.block_faces.top = result;
+                            document.getElementById("outfilename").value = evnt.dataTransfer.files[0].name;
                             break;
                         case "side":
-                            state.block_faces.side = reader.result;
+                            state.block_faces.side = result;
                             break;
                         case "front":
-                            state.block_faces.front = reader.result;
+                            state.block_faces.front = result;
                             break;
                     }
                     //TODO: Make this URL available to something
-                    await render_block(state.block_faces);
+                    render_block(state.block_faces, document.getElementById("render-canvas"));
                 };
             }
         }

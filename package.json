@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "riot": "^4.12.1",
-    "three": "^0.115.0"
+    "three": "^0.116.0"
   },
   "devDependencies": {
     "@riotjs/compiler": "^4.8.3",

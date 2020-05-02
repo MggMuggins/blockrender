@@ -1,4 +1,10 @@
-import { Camera, Mesh, OrthographicCamera } from "three";
+import {
+    Camera,
+    DefaultLoadingManager,
+    Mesh,
+    OrthographicCamera,
+    Scene,
+    WebGLRenderer } from "three";
 
 // Pretty much every ISO rendering is done with the same rotation
 // transformation, 45 degrees right and 30 degrees down.
@@ -14,4 +20,18 @@ export function block_camera(): Camera {
     cam.position.z = 3;
     
     return cam;
+}
+
+export function run_once_render(scene: Scene, camera: Camera, canvas?: HTMLCanvasElement) {
+    canvas.getContext("webgl", { preserveDrawingBuffer: true });
+    
+    var renderer = new WebGLRenderer({
+        alpha: true,
+        canvas: canvas,
+    });
+    renderer.setSize(512, 512);
+    
+    DefaultLoadingManager.onLoad = function() {
+        renderer.render(scene, camera);
+    }
 }
