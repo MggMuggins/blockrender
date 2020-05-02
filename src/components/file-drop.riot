@@ -1,0 +1,44 @@
+<file-drop
+    id={ props.id }
+    ondragenter={ dragenter }
+    ondragover={ dragover }
+    ondragexit={ dragexit }
+    ondrop={ drop }>
+    { props.maintext }<br/><span style="font-size: 16px;">{ props.smalltext }</span>
+    
+    <style>
+        :host {
+            width: 80%;
+            padding: 30px;
+            border: dashed grey 4px;
+            margin: 10px;
+            display: block;
+            color: grey;
+            text-align: center;
+            font-size: 30px;
+            user-select: none;
+        }
+    </style>
+    
+    <script>
+        export default {
+            dragenter(evnt) {
+                evnt.target.style.transform = "scale(1.02)";
+            },
+            
+            dragexit(evnt) {
+                evnt.target.style.transform = "";
+            },
+            
+            dragover(evnt) {
+                evnt.preventDefault();
+            },
+            
+            drop(evnt) {
+                evnt.preventDefault();
+                this.dragexit(evnt);
+                this.props.on_drop(evnt, this.props.id);
+            }
+        }
+    </script>
+</file-drop>

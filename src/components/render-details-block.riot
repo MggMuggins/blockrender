@@ -1,55 +1,41 @@
 <render-details-block>
-    <div class="file-drop"
+    <file-drop
         id="block-top"
-        ondragenter={ drag_enter }
-        ondragover= { drag_over }
-        ondragexit={ drag_exit }
-        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "top"); } }
-    >
-        Top
-    </div>
-    <div class="file-drop"
+        on_drop={ drop }
+        maintext="Top"></file-drop>
+    <file-drop
         id="block-side"
-        ondragenter={ drag_enter }
-        ondragover={ drag_over }
-        ondragexit={ drag_exit }
-        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "side"); } }
-    >
-        Side<br/><span class="default-texture">Default: Top</span>
-    </div>
-    <div class="file-drop"
+        on_drop={ drop }
+        maintext="Side"
+        smalltext="Default: Top"></file-drop>
+    <file-drop
         id="block-front"
-        ondragenter={ drag_enter }
-        ondragover={ drag_over }
-        ondragexit={ drag_exit }
-        ondrop={ (evnt) => { evnt.preventDefault(); drop(evnt, "front"); } }
-    >
-        Front<br/><span class="default-texture">Default: Side</span>
-    </div>
+        on_drop={ drop }
+        maintext="Front"
+        smalltext="Default: Side"></file-drop>
     
     <script>
-        import { render_block } from "../blockrender"
+        import { render_block } from "../blockrender";
+        import * as riot from "riot";
+        import FileDrop from "./file-drop.riot";
+        
+        riot.register("file-drop", FileDrop);
+        riot.mount("file-drop");
+        
+        // I adore regex... lmao
+        function process_name(name) {
+            return name
+                .replace(/^.|_./g, match => match.toUpperCase())
+                .replace(/_top|_side|_front|_bottom|_middle|_/gi, "");
+        }
         
         export default {
             onMounted() {
                 this.state.block_faces = {};
             },
             
-            drag_enter(evnt) {
-                evnt.target.style.transform = "scale(1.02)";
-            },
-            
-            drag_over(evnt) {
-                evnt.preventDefault();
-            },
-            
-            drag_exit(evnt) {
-                evnt.target.style.transform = "";
-            },
-            
-            drop(evnt, pos) {
+            drop(evnt, id) {
                 let state = this.state;
-                this.drag_exit(evnt);
                 
                 let reader = new FileReader();
                 // Only one file per box pls
@@ -60,20 +46,20 @@
                 
                 reader.onload = function() {
                     let result = dataURL == "" ? reader.result : dataURL;
+                    document.getElementById("outfilename").value = process_name(evnt.dataTransfer.files[0].name);
                     
-                    switch (pos) {
-                        case "top":
-                            state.block_faces.top = result;
-                            document.getElementById("outfilename").value = evnt.dataTransfer.files[0].name;
+                    switch (id) {
+                        case "block-top":
+                            state.block_faces = { top: result }
                             break;
-                        case "side":
+                        case "block-side":
                             state.block_faces.side = result;
                             break;
-                        case "front":
+                        case "block-front":
                             state.block_faces.front = result;
                             break;
                     }
-                    //TODO: Make this URL available to something
+                    
                     render_block(state.block_faces, document.getElementById("render-canvas"));
                 };
             }
