@@ -28,35 +28,6 @@ h3 {
     position: relative;
 }
 
-.file {
-    width: 80%;
-    height: 30px;
-    margin: 5px 5% 5px 5%;
-    padding: 3px;
-    border: 1px solid black;
-    display: inline-block;
-    user-select: none;
-}
-
-.file:hover {
-    cursor: pointer;
-}
-
-.file-remove {
-    width: 20px;
-    height: 20px;
-    background-color: maroon;
-    border-radius: 50%;
-    transition: all 0.1s ease-in-out;
-    
-    font-size: 14px;
-    color: white;
-    text-align: center;
-    line-height: 20px;
-    
-    float: right;
-}
-
 #file-chooser {
     position: absolute;
     top: 0;
