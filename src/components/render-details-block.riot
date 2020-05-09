@@ -37,19 +37,20 @@
             drop(evnt, id) {
                 let state = this.state;
                 let data = evnt.dataTransfer;
+                let filevar = data.files;
                 
                 let reader = new FileReader();
                 // Only one file per box pls
-                if (data.files.length > 0)
-                    reader.readAsDataURL(data.files[0]);
+                if (filevar.length > 0)
+                    reader.readAsDataURL(filevar[0]);
                 
                 let dataURL = data.getData("text/url-list");
                 
                 reader.onload = function() {
                     let result = dataURL == "" ? reader.result : dataURL;
                     
-                    if (data.files.length > 0)
-                        document.getElementById("outfilename").value = process_name(data.files[0].name);
+                    if (filevar.length > 0)
+                        document.getElementById("outfilename").value = process_name(filevar[0].name);
                     else
                         console.log("Chrome/Webkit drag and drop doesn't include the filename :/ :", data);
                     
